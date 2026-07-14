@@ -12,7 +12,20 @@ function convertPokeApiDetailToPokemon(pokeDetail) {
     pokemon.types = types
     pokemon.type = type
 
-    pokemon.photo = pokeDetail.sprites.other.dream_world.front_default
+    // Usando a imagem oficial de alta qualidade (Artwork) para o detalhe ficar idêntico ao mockup
+    pokemon.photo = pokeDetail.sprites.other['official-artwork'].front_default
+
+    // Conversões físicas (decímetros -> metros, hectogramas -> kg)
+    pokemon.height = (pokeDetail.height / 10).toFixed(1);
+    pokemon.weight = (pokeDetail.weight / 10).toFixed(1);
+
+    // Habilidades
+    pokemon.abilities = pokeDetail.abilities.map((abilitySlot) => abilitySlot.ability.name);
+
+    // Atributos de batalha (Stats)
+    pokeDetail.stats.forEach((statSlot) => {
+        pokemon.stats[statSlot.stat.name] = statSlot.base_stat;
+    });
 
     return pokemon
 }
